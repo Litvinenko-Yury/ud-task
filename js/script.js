@@ -1,16 +1,15 @@
 'use strict';
 
 /*===2===*/
-let money = prompt("Ваш бюджет на месяц?", "200");
-console.log("money: " + money);
-
-let time = prompt("Введите дату в формате YYYY-MM-DD", "2020-02-02");
+let money = Number(prompt("Ваш бюджет на месяц?", "")),
+    time = prompt("Введите дату в формате YYYY-MM-DD", "2020-02-02");
+console.log("money: " + money + " , это " + typeof (money));
 console.log("time: " + time);
 
 
 /*===3===*/
 let appData = {
-    moneyData: money,
+    budget: money,
     timeData: time,
     expenses: {},
     optionalExpenses: {},
@@ -20,15 +19,33 @@ let appData = {
 
 
 /*===4===*/
-let question1_a = prompt("Введите обязательную статью расходов в этом месяце", "еда"),
-    question1_b = Number(prompt("Во сколько обойдется?", "600")),
-    question2_a = prompt("Введите обязательную статью расходов в этом месяце", "связь"),
-    question2_b = Number(prompt("Во сколько обойдется?", "60"));
-console.log(typeof (question1_b));
-console.log(typeof (question2_b));
+for (let i = 0; i < 2; i++) {
+    let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
+        b = Number(prompt("Во сколько обойдется?", ""));
+    console.log("сумма: " + b + " , это " + typeof (b));
 
-appData.expenses[question1_a] = question1_b;
-appData.expenses[question2_a] = question2_b;
+    /*проверка введенных данных на разные условия*/
+    if (typeof (a) === 'string' && typeof (a) != null && typeof (b) != null && a != "" && b != "" && a.lenght < 50) {
+        console.log("done");
+        appData.expenses[a] = b; //пара ключ-значение
+    } else {
+        //если проверка не пройдена, вернуться к вопросу заново
+        console.log("bad result");
+        i--;
+    }
+}
 
-let totalCost = (question1_b + question2_b) / 30;
-console.log("бюджет на 1 день: " + totalCost);
+appData.moneyPerDay = (appData.budget / 30).toFixed(2);
+
+alert("Ежедневный бюджет: " + appData.moneyPerDay);
+
+/*в зависимости ежедневного бюджета выводим уровень достатка человека*/
+if (appData.moneyPerDay < 100) {
+    console.log('минимальный уровень');
+} else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+    console.log('средний уровень');
+} else if (appData.moneyPerDay > 2000) {
+    console.log('высокий уровень');
+} else {
+    console.log('произошла ошибка');
+}
